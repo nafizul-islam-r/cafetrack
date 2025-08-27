@@ -1,8 +1,9 @@
-<footer class="mt-auto">
+<footer class="mt-auto bg-body-tertiary pt-5">
   <div class="container">
     <div class="row">
       <div class="col-md-4 mb-3">
-        <h5><b>About Us</b></h5>
+        <img src="{{ asset('logo/logo-footer.png') }}" alt="" width="250" class="mb-5">
+        {{-- <h5><b>About Us</b></h5> --}}
         <p>We provide a modern campus dining experience with diverse, delicious, and healthy food options for everyone.</p>
       </div>
       <div class="col-md-4 mb-3">
@@ -22,6 +23,8 @@
         </ul>
       </div>
     </div>
+  </div>
+  <div class="container-fluid">
     <hr class="mb-4">
     <div class="row">
       <div class="col-md-12 text-center">
