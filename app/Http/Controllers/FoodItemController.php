@@ -15,7 +15,7 @@ class FoodItemController extends Controller
             ->withCount('reviews')
             ->get();
 
-        return view('food.index', [
+        return view('food-items.index', [
             'foodItems' => $foodItems
         ]);
     }
@@ -25,7 +25,7 @@ class FoodItemController extends Controller
         if (!Gate::allows('is-admin')) {
             abort(403);
         }
-        return view('food.create');
+        return view('food-items.create');
     }
 
     public function store(Request $request)
@@ -62,7 +62,7 @@ class FoodItemController extends Controller
         $reviewCount = $reviews->count();
         $averageRating = $reviews->avg('rating');
 
-        return view('food.show', [
+        return view('food-items.show', [
             'foodItem' => $foodItem,
             'reviews' => $reviews,
             'reviewCount' => $reviewCount,
@@ -76,7 +76,7 @@ class FoodItemController extends Controller
             abort(403);
         }
 
-        return view('food.edit', [
+        return view('food-items.edit', [
             'foodItem' => $foodItem
         ]);
     }
@@ -105,7 +105,7 @@ class FoodItemController extends Controller
 
         $foodItem->update($validated);
 
-        return redirect()->route('food.show', $foodItem)->with('success', 'Food item updated successfully!');
+        return redirect()->route('food-items.show', $foodItem)->with('success', 'Food item updated successfully!');
     }
 
     public function destroy(FoodItem $foodItem)
