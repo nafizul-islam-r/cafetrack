@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Storage;
 
 class BoardGameController extends Controller
 {
+    public function publicIndex()
+    {
+        $boardGames = BoardGame::all();
+        return view('board-games.public-index', [
+            'boardGames' => $boardGames
+        ]);
+    }
+
     public function index()
     {
         $boardGames = BoardGame::all();

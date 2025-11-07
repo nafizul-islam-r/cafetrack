@@ -66,7 +66,7 @@
                                         </div>
 
                                         <div class="flex justify-between items-end mt-2">
-                                            <span class="text-sm">Stock: {{ $item->quantity }}</span>
+                                            <span class="text-sm">Stock: {{ $item->stock_quantity }}</span>
                                             <span class="text-lg font-semibold">BDT
                                                 {{ number_format($item->price, 2) }}</span>
                                         </div>

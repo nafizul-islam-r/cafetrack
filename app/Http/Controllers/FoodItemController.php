@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\Storage;
 
 class FoodItemController extends Controller
 {
+    public function publicIndex()
+    {
+        $foodItems = FoodItem::withAvg('reviews', 'rating')
+                              ->withCount('reviews')
+                              ->get();
+
+        return view('food-items.public-index', [
+            'foodItems' => $foodItems
+        ]);
+    }
     public function index()
     {
         $foodItems = FoodItem::withAvg('reviews', 'rating')
@@ -37,7 +47,7 @@ class FoodItemController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
-            'quantity' => 'required|integer|min:0',
+            'stock_quantity' => 'required|integer|min:0',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -46,7 +56,7 @@ class FoodItemController extends Controller
         FoodItem::create([
             'name' => $validated['name'],
             'price' => $validated['price'],
-            'quantity' => $validated['quantity'],
+            'stock_quantity' => $validated['quantity'],
             'image_url' => $imagePath,
         ]);
 
@@ -90,7 +100,7 @@ class FoodItemController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
-            'quantity' => 'required|integer|min:0',
+            'stock_quantity' => 'required|integer|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Image is optional
         ]);
 

@@ -25,10 +25,10 @@
                         </div>
 
                         <div class="mt-4">
-                            <x-input-label for="quantity" :value="__('Quantity')" />
-                            <x-text-input id="quantity" class="block mt-1 w-full" type="number" name="quantity"
-                                :value="old('quantity')" required />
-                            <x-input-error :messages="$errors->get('quantity')" class="mt-2" />
+                            <x-input-label for="stock_quantity" :value="__('Stock Quantity')" />
+                            <x-text-input id="stock_quantity" class="block mt-1 w-full" type="number" name="stock_quantity"
+                                :value="old('stock_quantity')" required />
+                            <x-input-error :messages="$errors->get('stock_quantity')" class="mt-2" />
                         </div>
 
                         <div class="mt-4">
