@@ -56,7 +56,7 @@ class FoodItemController extends Controller
         FoodItem::create([
             'name' => $validated['name'],
             'price' => $validated['price'],
-            'stock_quantity' => $validated['quantity'],
+            'stock_quantity' => $validated['stock_quantity'],
             'image_url' => $imagePath,
         ]);
 
