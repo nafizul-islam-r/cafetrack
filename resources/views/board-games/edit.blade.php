@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <form method="POST" action="{{ route('board-games.update', $boardGame) }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('board-games.update', $boardGame) }}">
                         @csrf <!-- CSRF Protection -->
                         @method('PUT') <!-- Specify the method is PUT for updating -->
 
@@ -36,14 +36,14 @@
 
                         <!-- Image Upload -->
                         <div class="mt-4">
-                            <x-input-label for="image" :value="__('New Image (Optional)')" />
-                            <input id="image" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-                                   type="file" name="image" />
-                            <x-input-error :messages="$errors->get('image')" class="mt-2" />
+                            <x-input-label for="image_url" :value="__('Image URL')" />
+                            <input id="image_url" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                                   type="url" name="image_url" value="{{ old('image_url', $boardGame->image_url) }}" required />
+                            <x-input-error :messages="$errors->get('image_url')" class="mt-2" />
 
                             <div class="mt-2">
                                 <span class="text-sm text-gray-600 dark:text-gray-400">Current Image:</span>
-                                <img src="{{ asset('storage/' . $boardGame->image_url) }}" alt="{{ $boardGame->name }}" class="w-24 h-24 object-cover mt-1 rounded">
+                                <img src="{{ $boardGame->image_url }}" alt="{{ $boardGame->name }}" class="w-24 h-24 object-cover mt-1 rounded">
                             </div>
                         </div>
 

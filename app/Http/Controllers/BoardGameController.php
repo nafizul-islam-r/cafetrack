@@ -44,16 +44,14 @@ class BoardGameController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'total_units' => 'required|integer|min:1',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_url' => 'required|url|max:2048',
         ]);
-
-        $imagePath = $request->file('image')->store('board-games', 'public');
 
         BoardGame::create([
             'name' => $validated['name'],
             'total_units' => $validated['total_units'],
             'available_units' => $validated['total_units'],
-            'image_url' => $imagePath,
+            'image_url' => $validated['image_url'],
         ]);
 
         return redirect()->route('board-games.index')->with('success', 'Board game added successfully!');
@@ -96,17 +94,8 @@ class BoardGameController extends Controller
             'name' => 'required|string|max:255',
             'total_units' => 'required|integer|min:0',
             'available_units' => 'required|integer|min:0|lte:total_units',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_url' => 'required|url|max:2048',
         ]);
-
-        // Check if a new image was uploaded
-        if ($request->hasFile('image')) {
-            // Delete the old image
-            Storage::disk('public')->delete($boardGame->image_url);
-
-            // Store the new image and update the path
-            $validated['image_url'] = $request->file('image')->store('board-games', 'public');
-        }
 
         // Update the board game
         $boardGame->update($validated);
@@ -120,9 +109,6 @@ class BoardGameController extends Controller
         if (!Gate::allows('is-admin')) {
             abort(403);
         }
-
-        // Delete the associated image file
-        Storage::disk('public')->delete($boardGame->image_url);
 
         // Delete the database record
         $boardGame->delete();

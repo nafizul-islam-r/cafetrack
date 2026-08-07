@@ -58,7 +58,7 @@
                                 @foreach ($boardGames as $game)
                                     <div class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-lg">
                                         <div class="w-full h-48 bg-gray-200 dark:bg-gray-700">
-                                            <img src="{{ asset('storage/' . $game->image_url) }}" alt="{{ $game->name }}" class="w-full h-full object-cover">
+                                            <img src="{{ $game->image_url }}" alt="{{ $game->name }}" class="w-full h-full object-cover">
                                         </div>
                                         <div class="p-4">
                                             <h3 class="font-bold text-lg">{{ $game->name }}</h3>

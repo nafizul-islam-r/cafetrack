@@ -59,7 +59,7 @@
 
                 <!-- Left Column: Game Details & Assign Form -->
                 <div class="md:col-span-1 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
-                    <img src="{{ asset('storage/' . $boardGame->image_url) }}" alt="{{ $boardGame->name }}"
+                    <img src="{{ $boardGame->image_url }}" alt="{{ $boardGame->name }}"
                         class="w-full h-64 object-cover rounded-lg mb-4">
                     <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ $boardGame->name }}</h3>
                     <p

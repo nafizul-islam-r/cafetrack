@@ -50,7 +50,7 @@
 
                 <div
                     class="md:col-span-1 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 flex flex-col space-y-6">
-                    <img src="{{ asset('storage/' . $foodItem->image_url) }}" alt="{{ $foodItem->name }}"
+                    <img src="{{ $foodItem->image_url }}" alt="{{ $foodItem->name }}"
                         class="w-full h-64 object-cover rounded-lg">
 
                     <div>

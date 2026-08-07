@@ -48,16 +48,14 @@ class FoodItemController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_url' => 'required|url|max:2048',
         ]);
-
-        $imagePath = $request->file('image')->store('food-images', 'public');
 
         FoodItem::create([
             'name' => $validated['name'],
             'price' => $validated['price'],
             'stock_quantity' => $validated['stock_quantity'],
-            'image_url' => $imagePath,
+            'image_url' => $validated['image_url'],
         ]);
 
         return redirect()->route('food-items.index')->with('success', 'Food item added successfully!');
@@ -101,17 +99,8 @@ class FoodItemController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Image is optional
+            'image_url' => 'required|url|max:2048',
         ]);
-
-        // Check if a new image was uploaded
-        if ($request->hasFile('image')) {
-            // Delete the old image
-            Storage::disk('public')->delete($foodItem->image_url);
-
-            // Store the new image and update the path
-            $validated['image_url'] = $request->file('image')->store('food-images', 'public');
-        }
 
         $foodItem->update($validated);
 
@@ -123,9 +112,6 @@ class FoodItemController extends Controller
         if (!Gate::allows('is-admin')) {
             abort(403);
         }
-
-        // Delete the associated image file
-        Storage::disk('public')->delete($foodItem->image_url);
 
         $foodItem->delete();
 

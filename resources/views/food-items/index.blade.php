@@ -33,7 +33,7 @@
                             @foreach ($foodItems as $item)
                                 <a href="{{ route('food-items.show', $item) }}"
                                     class="block border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-200">
-                                    <img src="{{ asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}"
+                                    <img src="{{ $item->image_url }}" alt="{{ $item->name }}"
                                         class="w-full h-48 object-cover">
                                     <div class="p-4">
                                         <h3 class="font-bold text-lg">{{ $item->name }}</h3>

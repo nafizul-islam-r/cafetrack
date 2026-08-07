@@ -35,7 +35,7 @@
                                     <!-- Admin: Card is a link to the manage page -->
                                     <a href="{{ route('board-games.show', $game) }}"
                                         class="block border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-200">
-                                        <img src="{{ asset('storage/' . $game->image_url) }}" alt="{{ $game->name }}"
+                                        <img src="{{ $game->image_url }}" alt="{{ $game->name }}"
                                             class="w-full h-48 object-cover">
                                         <div class="p-4">
                                             <h3 class="font-bold text-lg">{{ $game->name }}</h3>
@@ -49,7 +49,7 @@
                                     <!-- Regular User: Card is not a link -->
                                     <div
                                         class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-lg">
-                                        <img src="{{ asset('storage/' . $game->image_url) }}" alt="{{ $game->name }}"
+                                        <img src="{{ $game->image_url }}" alt="{{ $game->name }}"
                                             class="w-full h-48 object-cover">
                                         <div class="p-4">
                                             <h3 class="font-bold text-lg">{{ $game->name }}</h3>
