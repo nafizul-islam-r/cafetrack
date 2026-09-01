@@ -65,39 +65,39 @@
 
                         <div class="mt-6">
                             @unless(Auth::user()->role === 'admin')
-                                <div class="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
+                                <div class="flex flex-wrap gap-4 items-center">
                                     @if($foodItem->stock_quantity > 0)
-                                        <form action="{{ route('cart.add') }}" method="POST" class="flex items-center space-x-4">
+                                        <form action="{{ route('cart.add') }}" method="POST" class="flex items-stretch space-x-3">
                                             @csrf
                                             <input type="hidden" name="food_item_id" value="{{ $foodItem->id }}">
                                             <div>
                                                 <label for="quantity" class="sr-only">Quantity</label>
-                                                <input type="number" id="quantity" name="quantity" value="1" min="1" max="{{ $foodItem->stock_quantity }}" class="w-20 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                                <input type="number" id="quantity" name="quantity" value="1" min="1" max="{{ $foodItem->stock_quantity }}" class="w-20 h-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                             </div>
-                                            <button type="submit" class="inline-flex justify-center items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                                            <button type="submit" class="inline-flex justify-center items-center px-4 py-3 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 shadow-sm">
                                                 Add to Cart
                                             </button>
                                         </form>
                                     @else
-                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800 h-10">
+                                        <span class="inline-flex items-center justify-center px-4 py-3 rounded-md font-semibold text-xs uppercase tracking-widest bg-red-100 text-red-800 border border-transparent shadow-sm">
                                             Out of Stock
                                         </span>
                                     @endif
 
                                     <!-- Wishlist Button -->
                                     @if($inWishlist)
-                                        <form action="{{ route('wishlists.destroy', $wishlistId) }}" method="POST">
+                                        <form action="{{ route('wishlists.destroy', $wishlistId) }}" method="POST" class="flex">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="inline-flex justify-center items-center px-4 py-2 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150 h-10">
+                                            <button type="submit" class="inline-flex justify-center items-center px-4 py-3 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150 shadow-sm text-center">
                                                 Remove from Wishlist
                                             </button>
                                         </form>
                                     @else
-                                        <form action="{{ route('wishlists.store') }}" method="POST">
+                                        <form action="{{ route('wishlists.store') }}" method="POST" class="flex">
                                             @csrf
                                             <input type="hidden" name="food_item_id" value="{{ $foodItem->id }}">
-                                            <button type="submit" class="inline-flex justify-center items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150 h-10">
+                                            <button type="submit" class="inline-flex justify-center items-center px-4 py-3 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150 shadow-sm text-center">
                                                 Add to Wishlist
                                             </button>
                                         </form>

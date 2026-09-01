@@ -13,6 +13,9 @@ class OrderController extends Controller
 {
     public function index(Request $request)
     {
+        // Dynamically run the expiration command to ensure local tests show correct status
+        \Illuminate\Support\Facades\Artisan::call('orders:cancel-expired');
+
         $query = Order::query();
 
         if (Gate::allows('is-admin')) {
@@ -115,6 +118,11 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
+        // Dynamically run the expiration command
+        \Illuminate\Support\Facades\Artisan::call('orders:cancel-expired');
+        // Refresh the model in case it was just cancelled
+        $order->refresh();
+
         if (!Gate::allows('is-admin') && $order->user_id !== Auth::id()) {
             abort(403);
         }
@@ -193,6 +201,10 @@ class OrderController extends Controller
             abort(403);
         }
 
+        if ($order->order_status === 'cancelled') {
+            return redirect()->route('orders.show', $order)->with('error', 'Cannot modify a cancelled order.');
+        }
+
         if ($order->payment_status === 'paid') {
             return redirect()->route('orders.show', $order)->with('info', 'Order is already marked as paid.');
         }
@@ -215,6 +227,10 @@ class OrderController extends Controller
     {
         if (!Gate::allows('is-admin')) {
             abort(403);
+        }
+
+        if ($order->order_status === 'cancelled') {
+            return redirect()->route('orders.show', $order)->with('error', 'Cannot modify a cancelled order.');
         }
 
         $order->update([
