@@ -17,12 +17,17 @@ class OrderController extends Controller
 
         if (Gate::allows('is-admin')) {
             if ($request->filled('token')) {
-                $tokenNumber = (int) preg_replace('/[^0-9]/', '', $request->query('token'));
-                if ($tokenNumber > 0) {
-                    $query->where('token_number', $tokenNumber);
-                } else {
-                    $query->where('order_number', 'like', '%' . $request->query('token') . '%');
-                }
+                $search = $request->query('token');
+                $query->where(function($q) use ($search) {
+                    // Always try to match the order number
+                    $q->where('order_number', 'like', '%' . $search . '%');
+                    
+                    // Also try to match token number if numbers are present
+                    $tokenNumber = (int) preg_replace('/[^0-9]/', '', $search);
+                    if ($tokenNumber > 0) {
+                        $q->orWhere('token_number', $tokenNumber);
+                    }
+                });
             }
 
             $status = $request->query('status');
