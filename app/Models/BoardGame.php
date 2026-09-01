@@ -13,6 +13,11 @@ class BoardGame extends Model
         'image_url',
     ];
 
+    protected $casts = [
+        'total_units' => 'integer',
+        'available_units' => 'integer',
+    ];
+
     public function assignments()
     {
         return $this->hasMany(Assignment::class);
