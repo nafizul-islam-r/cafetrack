@@ -42,7 +42,7 @@
                                         <ul class="list-disc pl-5 space-y-1">
                                             @foreach($pendingTakeaways as $pto)
                                                 @php
-                                                    $expiresIn = max(0, 30 - $pto->created_at->diffInMinutes(now()));
+                                                    $expiresIn = max(0, 30 - (int) $pto->created_at->diffInMinutes(now()));
                                                 @endphp
                                                 <li>
                                                     <a href="{{ route('orders.show', $pto) }}" class="font-bold underline hover:text-yellow-900 dark:hover:text-yellow-100">

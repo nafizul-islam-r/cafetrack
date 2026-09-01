@@ -19,16 +19,27 @@ Route::get('/games', [BoardGameController::class, 'publicIndex'])->name('board-g
 Route::middleware(['auth', 'verified'])->group(function () {
     
     Route::get('/dashboard', function () {
+        \Illuminate\Support\Facades\Artisan::call('orders:cancel-expired');
+
         $stats = [];
         if (Gate::allows('is-admin')) {
             $stats['pending_orders'] = \App\Models\Order::where('order_status', 'pending')->count();
             $stats['completed_orders'] = \App\Models\Order::where('order_status', 'completed')->count();
             $stats['total_orders'] = \App\Models\Order::count();
+
+            $pendingTakeaways = \App\Models\Order::where('order_status', 'pending')
+                ->where('order_type', 'takeaway')
+                ->get();
         } else {
             $stats['my_orders'] = \App\Models\Order::where('user_id', Auth::id())->count();
             $stats['my_pending'] = \App\Models\Order::where('user_id', Auth::id())->where('order_status', 'pending')->count();
+
+            $pendingTakeaways = \App\Models\Order::where('user_id', Auth::id())
+                ->where('order_status', 'pending')
+                ->where('order_type', 'takeaway')
+                ->get();
         }
-        return view('dashboard', compact('stats'));
+        return view('dashboard', compact('stats', 'pendingTakeaways'));
     })->name('dashboard');
 
     Route::resource('food-items', FoodItemController::class);
