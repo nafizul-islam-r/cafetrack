@@ -22,13 +22,14 @@
 
                     @if(Gate::allows('is-admin'))
                         <div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
-                            <form method="GET" action="{{ route('orders.index') }}" class="flex items-center space-x-2">
+                            <form method="GET" action="{{ route('orders.index') }}" class="flex flex-wrap gap-2 items-center">
                                 @if(request('status'))
                                     <input type="hidden" name="status" value="{{ request('status') }}">
                                 @endif
-                                <input type="text" name="token" value="{{ request('token') }}" placeholder="Search Token or Order #" class="rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 text-sm">
+                                <input type="text" name="order_number" value="{{ request('order_number') }}" placeholder="Order #" class="rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 text-sm w-32 sm:w-auto">
+                                <input type="text" name="token" value="{{ request('token') }}" placeholder="Token #" class="rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 text-sm w-32 sm:w-auto">
                                 <button type="submit" class="px-3 py-2 bg-indigo-600 text-white rounded-md text-sm hover:bg-indigo-700">Search</button>
-                                @if(request('token'))
+                                @if(request('token') || request('order_number'))
                                     <a href="{{ route('orders.index', request()->only('status')) }}" class="text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">Clear</a>
                                 @endif
                             </form>
