@@ -34,7 +34,7 @@
                         <!-- Theme Toggle Button Removed -->
                         
                         <a href="{{ route('login') }}" class="px-4 py-2 text-sm font-medium text-white bg-brand-red hover:bg-opacity-90 rounded-md shadow-sm">
-                            Login to Review
+                            Login to Order
                         </a>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
                     <h1 class="text-4xl font-extrabold text-brand-brown dark:text-white">Our Food Menu</h1>
-                    <p class="mt-4 text-lg text-gray-500 dark:text-gray-400">Browse what's currently available. Log in to see stock and write reviews.</p>
+                    <p class="mt-4 text-lg text-gray-500 dark:text-gray-400">Browse what's currently available. Log in to order and write reviews.</p>
                 </div>
 
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">

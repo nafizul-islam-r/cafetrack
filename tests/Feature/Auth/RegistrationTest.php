@@ -12,8 +12,14 @@ test('new users can register', function () {
         'email' => 'test@example.com',
         'password' => 'password',
         'password_confirmation' => 'password',
+        'department' => 'CSE',
+        'intake' => 'Fall 2024',
+        'student_id' => 'TEST123456',
     ]);
 
     $this->assertAuthenticated();
     $response->assertRedirect(route('dashboard', absolute: false));
+
+    // Cleanup
+    \App\Models\User::where('email', 'test@example.com')->delete();
 });

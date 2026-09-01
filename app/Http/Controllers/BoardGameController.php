@@ -11,6 +11,10 @@ class BoardGameController extends Controller
 {
     public function publicIndex()
     {
+        if (\Illuminate\Support\Facades\Auth::check()) {
+            return redirect()->route('board-games.index');
+        }
+
         $boardGames = BoardGame::all();
         return view('board-games.public-index', [
             'boardGames' => $boardGames

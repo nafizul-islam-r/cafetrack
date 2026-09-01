@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FoodItem;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
@@ -11,9 +12,15 @@ class FoodItemController extends Controller
 {
     public function publicIndex()
     {
-        $foodItems = FoodItem::withAvg('reviews', 'rating')
-                              ->withCount('reviews')
-                              ->get();
+        if (\Illuminate\Support\Facades\Auth::check()) {
+            return redirect()->route('food-items.index');
+        }
+
+        $foodItems = FoodItem::with('reviews')->get()->map(function ($item) {
+            $item->reviews_count = $item->reviews->count();
+            $item->reviews_avg_rating = $item->reviews->avg('rating');
+            return $item;
+        });
 
         return view('food-items.public-index', [
             'foodItems' => $foodItems
@@ -21,12 +28,23 @@ class FoodItemController extends Controller
     }
     public function index()
     {
-        $foodItems = FoodItem::withAvg('reviews', 'rating')
-            ->withCount('reviews')
-            ->get();
+        $foodItems = FoodItem::with('reviews')->get()->map(function ($item) {
+            $item->reviews_count = $item->reviews->count();
+            $item->reviews_avg_rating = $item->reviews->avg('rating');
+            return $item;
+        });
+
+        $wishlistedItems = [];
+        if (\Illuminate\Support\Facades\Auth::check()) {
+            $wishlists = \App\Models\Wishlist::where('user_id', \Illuminate\Support\Facades\Auth::id())->get();
+            foreach ($wishlists as $w) {
+                $wishlistedItems[$w->food_item_id] = $w->id;
+            }
+        }
 
         return view('food-items.index', [
-            'foodItems' => $foodItems
+            'foodItems' => $foodItems,
+            'wishlistedItems' => $wishlistedItems,
         ]);
     }
 
@@ -53,8 +71,8 @@ class FoodItemController extends Controller
 
         FoodItem::create([
             'name' => $validated['name'],
-            'price' => $validated['price'],
-            'stock_quantity' => $validated['stock_quantity'],
+            'price' => (float) $validated['price'],
+            'stock_quantity' => (int) $validated['stock_quantity'],
             'image_url' => $validated['image_url'],
         ]);
 
@@ -70,11 +88,34 @@ class FoodItemController extends Controller
         $reviewCount = $reviews->count();
         $averageRating = $reviews->avg('rating');
 
+        $canReview = false;
+        if (\Illuminate\Support\Facades\Auth::check() && !\Illuminate\Support\Facades\Gate::allows('is-admin')) {
+            $canReview = \App\Models\Order::where('user_id', \Illuminate\Support\Facades\Auth::id())
+                ->where('order_status', 'completed')
+                ->where('items.food_item_id', $foodItem->id)
+                ->exists();
+        }
+
+        $inWishlist = false;
+        $wishlistId = null;
+        if (\Illuminate\Support\Facades\Auth::check()) {
+            $wishlist = \App\Models\Wishlist::where('user_id', \Illuminate\Support\Facades\Auth::id())
+                                              ->where('food_item_id', $foodItem->id)
+                                              ->first();
+            if ($wishlist) {
+                $inWishlist = true;
+                $wishlistId = $wishlist->id;
+            }
+        }
+
         return view('food-items.show', [
             'foodItem' => $foodItem,
             'reviews' => $reviews,
             'reviewCount' => $reviewCount,
             'averageRating' => $averageRating,
+            'canReview' => $canReview,
+            'inWishlist' => $inWishlist,
+            'wishlistId' => $wishlistId,
         ]);
     }
 
@@ -101,6 +142,9 @@ class FoodItemController extends Controller
             'stock_quantity' => 'required|integer|min:0',
             'image_url' => 'required|url|max:2048',
         ]);
+
+        $validated['price'] = (float) $validated['price'];
+        $validated['stock_quantity'] = (int) $validated['stock_quantity'];
 
         $foodItem->update($validated);
 

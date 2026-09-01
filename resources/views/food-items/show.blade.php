@@ -62,6 +62,60 @@
                             class="text-md mt-2 {{ $foodItem->stock_quantity > 0 ? 'text-gray-700 dark:text-gray-300' : 'text-red-600 dark:text-red-400' }}">
                             Stock: {{ $foodItem->stock_quantity }}
                         </p>
+
+                        <div class="mt-6">
+                            @unless(Auth::user()->role === 'admin')
+                                <div class="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
+                                    @if($foodItem->stock_quantity > 0)
+                                        <form action="{{ route('cart.add') }}" method="POST" class="flex items-center space-x-4">
+                                            @csrf
+                                            <input type="hidden" name="food_item_id" value="{{ $foodItem->id }}">
+                                            <div>
+                                                <label for="quantity" class="sr-only">Quantity</label>
+                                                <input type="number" id="quantity" name="quantity" value="1" min="1" max="{{ $foodItem->stock_quantity }}" class="w-20 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                            </div>
+                                            <button type="submit" class="inline-flex justify-center items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                                                Add to Cart
+                                            </button>
+                                        </form>
+                                    @else
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800 h-10">
+                                            Out of Stock
+                                        </span>
+                                    @endif
+
+                                    <!-- Wishlist Button -->
+                                    @if($inWishlist)
+                                        <form action="{{ route('wishlists.destroy', $wishlistId) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="inline-flex justify-center items-center px-4 py-2 bg-red-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150 h-10">
+                                                Remove from Wishlist
+                                            </button>
+                                        </form>
+                                    @else
+                                        <form action="{{ route('wishlists.store') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="food_item_id" value="{{ $foodItem->id }}">
+                                            <button type="submit" class="inline-flex justify-center items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150 h-10">
+                                                Add to Wishlist
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
+                            @else
+                                <!-- Admin View -->
+                                @if($foodItem->stock_quantity > 0)
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                        In Stock ({{ $foodItem->stock_quantity }})
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+                                        Out of Stock
+                                    </span>
+                                @endif
+                            @endunless
+                        </div>
                     </div>
 
                     <div>
@@ -94,39 +148,52 @@
 
                     <hr class="border-gray-200 dark:border-gray-700">
 
-                    <h4 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Leave a Review</h4>
-                    <form method="POST" action="{{ route('reviews.store') }}">
-                        @csrf
-                        <input type="hidden" name="food_item_id" value="{{ $foodItem->id }}">
+                    @if($canReview)
+                        <h4 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Leave a Review</h4>
+                        <form method="POST" action="{{ route('reviews.store') }}">
+                            @csrf
+                            <input type="hidden" name="food_item_id" value="{{ $foodItem->id }}">
 
-                        <div>
-                            <x-input-label for="rating" :value="__('Rating')" />
-                            <select id="rating" name="rating"
-                                class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-                                required>
-                                <option value="" disabled selected>Select a rating</option>
-                                <option value="5">⭐⭐⭐⭐⭐ (Excellent)</option>
-                                <option value="4">⭐⭐⭐⭐ (Good)</option>
-                                <option value="3">⭐⭐⭐ (Average)</option>
-                                <option value="2">⭐⭐ (Poor)</option>
-                                <option value="1">⭐ (Bad)</option>
-                            </select>
-                            <x-input-error :messages="$errors->get('rating')" class="mt-2" />
-                        </div>
+                            <div>
+                                <x-input-label for="rating" :value="__('Rating')" />
+                                <select id="rating" name="rating"
+                                    class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                                    required>
+                                    <option value="" disabled selected>Select a rating</option>
+                                    <option value="5">⭐⭐⭐⭐⭐ (Excellent)</option>
+                                    <option value="4">⭐⭐⭐⭐ (Good)</option>
+                                    <option value="3">⭐⭐⭐ (Average)</option>
+                                    <option value="2">⭐⭐ (Poor)</option>
+                                    <option value="1">⭐ (Bad)</option>
+                                </select>
+                                <x-input-error :messages="$errors->get('rating')" class="mt-2" />
+                            </div>
 
-                        <div class="mt-4">
-                            <x-input-label for="comment" :value="__('Comment (Optional)')" />
-                            <textarea id="comment" name="comment" rows="4"
-                                class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">{{ old('comment') }}</textarea>
-                            <x-input-error :messages="$errors->get('comment')" class="mt-2" />
-                        </div>
+                            <div class="mt-4">
+                                <x-input-label for="comment" :value="__('Comment (Optional)')" />
+                                <textarea id="comment" name="comment" rows="4"
+                                    class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">{{ old('comment') }}</textarea>
+                                <x-input-error :messages="$errors->get('comment')" class="mt-2" />
+                            </div>
 
-                        <div class="flex items-center justify-end mt-4">
-                            <x-primary-button class="ms-4">
-                                {{ __('Submit Review') }}
-                            </x-primary-button>
+                            <div class="flex items-center justify-end mt-4">
+                                <x-primary-button class="ms-4">
+                                    {{ __('Submit Review') }}
+                                </x-primary-button>
+                            </div>
+                        </form>
+                    @else
+                        <div class="mt-4 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg flex items-start space-x-3">
+                            <svg class="w-6 h-6 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <p class="text-sm text-blue-700 dark:text-blue-300">
+                                @can('is-admin')
+                                    Admins cannot leave reviews. Only students can review items they have ordered.
+                                @else
+                                    You can only review this item after ordering it and receiving your completed order.
+                                @endcan
+                            </p>
                         </div>
-                    </form>
+                    @endif
                 </div>
 
                 <div class="md:col-span-2 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">

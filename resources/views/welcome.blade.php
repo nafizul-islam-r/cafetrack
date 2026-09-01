@@ -52,9 +52,7 @@
                         <a href="#hero" class="text-sm font-medium"
                             :class="activeSection === 'hero' ? 'text-brand-red' :
                                 'text-gray-500 dark:text-gray-400 hover:text-brand-red dark:hover:text-brand-red'">Home</a>
-                        <a href="#about" class="text-sm font-medium"
-                            :class="activeSection === 'about' ? 'text-brand-red' :
-                                'text-gray-500 dark:text-gray-400 hover:text-brand-red dark:hover:text-brand-red'">About</a>
+
                         <a href="#services" class="text-sm font-medium"
                             :class="activeSection === 'services' ? 'text-brand-red' :
                                 'text-gray-500 dark:text-gray-400 hover:text-brand-red dark:hover:text-brand-red'">Services</a>
@@ -102,10 +100,7 @@
                         class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
                         :class="activeSection === 'hero' ? 'border-brand-red text-brand-red bg-red-50 dark:bg-gray-700' :
                             'border-transparent text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700'">Home</a>
-                    <a href="#about" @click="mobileMenuOpen = false"
-                        class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-                        :class="activeSection === 'about' ? 'border-brand-red text-brand-red bg-red-50 dark:bg-gray-700' :
-                            'border-transparent text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700'">About</a>
+
                     <a href="#services" @click="mobileMenuOpen = false"
                         class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
                         :class="activeSection === 'services' ? 'border-brand-red text-brand-red bg-red-50 dark:bg-gray-700' :
@@ -158,81 +153,9 @@
                 </div>
             </section>
 
-            <!-- About Section (Team) -->
-            <section id="about" class="py-60 bg-gray-50 dark:bg-gray-900">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="text-center">
-                        <h2 class="text-3xl font-extrabold text-brand-brown dark:text-white">Meet the Team</h2>
-                        <p class="mt-4 text-lg text-gray-500 dark:text-gray-400">The creative minds behind CaféTrack.
-                        </p>
-                    </div>
-                    <div class="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
 
-                        <!-- Team Member 1 -->
-                        <div
-                            class="bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden text-center transform hover:scale-105 transition-transform">
-                            <!-- UPDATED: Replaced div with img tag -->
-                            <img class="w-full h-48 object-cover" src="{{ asset('team/ACID.jpg') }}"
-                                alt="ACID">
-                            <div class="p-6">
-                                <h3 class="text-xl font-semibold text-brand-brown dark:text-white">ACID</h3>
-                                <p class="text-brand-red">Founder & Lead Developer</p>
-                            </div>
-                        </div>
 
-                        <!-- Team Member 2 -->
-                        <div
-                            class="bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden text-center transform hover:scale-105 transition-transform">
-                            <!-- UPDATED: Replaced div with img tag -->
-                            <img class="w-full h-48 object-cover" src="{{ asset('team/Samia.jpg') }}"
-                                alt="Samia">
-                            <div class="p-6">
-                                <h3 class="text-xl font-semibold text-brand-brown dark:text-white">Samia</h3>
-                                <p class="text-brand-red">Backend Developer</p>
-                            </div>
-                        </div>
-
-                        <!-- Team Member 3 -->
-                        <div
-                            class="bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden text-center transform hover:scale-105 transition-transform">
-                            <!-- UPDATED: Replaced div with img tag -->
-                            <img class="w-full h-48 object-cover" src="{{ asset('team/Abirata.jpg') }}"
-                                alt="Abirata">
-                            <div class="p-6">
-                                <h3 class="text-xl font-semibold text-brand-brown dark:text-white">Abirata</h3>
-                                <p class="text-brand-red">Frontend Developer</p>
-                            </div>
-                        </div>
-
-                        <!-- Team Member 4 -->
-                        <div
-                            class="bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden text-center transform hover:scale-105 transition-transform">
-                            <!-- UPDATED: Replaced div with img tag -->
-                            <img class="w-full h-48 object-cover" src="{{ asset('team/G2_.jpg') }}"
-                                alt="Jitu">
-                            <div class="p-6">
-                                <h3 class="text-xl font-semibold text-brand-brown dark:text-white">Jitu</h3>
-                                <p class="text-brand-red">UI/UX Designer</p>
-                            </div>
-                        </div>
-
-                        <!-- Team Member 5 -->
-                        <div
-                            class="bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden text-center transform hover:scale-105 transition-transform">
-                            <!-- UPDATED: Replaced div with img tag -->
-                            <img class="w-full h-48 object-cover" src="{{ asset('team/Razib.jpg') }}"
-                                alt="Razib">
-                            <div class="p-6">
-                                <h3 class="text-xl font-semibold text-brand-brown dark:text-white">Razib</h3>
-                                <p class="text-brand-red">QA Engineer</p>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </section>
-
-            <section id="services" class="py-60 bg-white dark:bg-gray-800">
+            <section id="services" class="py-60 bg-gray-50 dark:bg-gray-900">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center">
                         <h2 class="text-3xl font-extrabold text-brand-brown dark:text-white">What We Offer</h2>
@@ -275,7 +198,7 @@
                 </div>
             </section>
 
-            <section id="faq" class="py-40 bg-gray-50 dark:bg-gray-900">
+            <section id="faq" class="py-40 bg-white dark:bg-gray-800">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center">
                         <h2 class="text-3xl font-extrabold text-brand-brown dark:text-white">Frequently Asked Questions
@@ -340,7 +263,7 @@
                 </div>
             </section>
 
-            <section id="contact" class="py-40 bg-white dark:bg-gray-800">
+            <section id="contact" class="py-40 bg-gray-50 dark:bg-gray-900">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center">
                         <h2 class="text-3xl font-extrabold text-brand-brown dark:text-white">Get in Touch</h2>
@@ -389,7 +312,7 @@
                         <img class="h-24 w-auto" src="{{ asset('logo-footer.png') }}" alt="CafeTrack Logo">
                     </div>
                     <div class="mt-8 md:mt-0 md:ml-10 flex flex-wrap justify-center md:justify-start space-x-6">
-                        <a href="#about" class="text-base font-medium text-gray-300 hover:text-white">About</a>
+
                         <a href="#services" class="text-base font-medium text-gray-300 hover:text-white">Services</a>
                         <a href="#faq" class="text-base font-medium text-gray-300 hover:text-white">FAQ</a>
                         <a href="#contact" class="text-base font-medium text-gray-300 hover:text-white">Contact</a>

@@ -31,8 +31,8 @@
                     @else
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                             @foreach ($foodItems as $item)
-                                <a href="{{ route('food-items.show', $item) }}"
-                                    class="block border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-200">
+                                <div class="relative group border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-200">
+                                    <a href="{{ route('food-items.show', $item) }}" class="block">
                                     <img src="{{ $item->image_url }}" alt="{{ $item->name }}"
                                         class="w-full h-48 object-cover">
                                     <div class="p-4">
@@ -66,12 +66,43 @@
                                         </div>
 
                                         <div class="flex justify-between items-end mt-2">
-                                            <span class="text-sm">Stock: {{ $item->stock_quantity }}</span>
+                                            @if($item->stock_quantity == 0)
+                                                <span class="text-sm text-red-500 font-medium">Out of Stock</span>
+                                            @else
+                                                <span class="text-sm">Stock: {{ $item->stock_quantity }}</span>
+                                            @endif
                                             <span class="text-lg font-semibold">BDT
                                                 {{ number_format($item->price, 2) }}</span>
                                         </div>
                                     </div>
-                                </a>
+                                    </a>
+
+                                    @if(!\Illuminate\Support\Facades\Gate::allows('is-admin'))
+                                        <div class="absolute top-2 right-2 z-10">
+                                            @if(array_key_exists($item->id, $wishlistedItems))
+                                                <form action="{{ route('wishlists.destroy', $wishlistedItems[$item->id]) }}" method="POST" class="m-0">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" title="Remove from Wishlist" class="p-2 bg-white rounded-full shadow text-red-500 hover:text-red-700 transition-colors">
+                                                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                                                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                                        </svg>
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <form action="{{ route('wishlists.store') }}" method="POST" class="m-0">
+                                                    @csrf
+                                                    <input type="hidden" name="food_item_id" value="{{ $item->id }}">
+                                                    <button type="submit" title="Add to Wishlist" class="p-2 bg-white rounded-full shadow text-gray-400 hover:text-red-500 transition-colors">
+                                                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                                                            <path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/>
+                                                        </svg>
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        </div>
+                                    @endif
+                                </div>
                             @endforeach
                         </div>
                     @endif

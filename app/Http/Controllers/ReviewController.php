@@ -23,6 +23,15 @@ class ReviewController extends Controller
 
         $userId = Auth::id(); // Get the currently logged-in user's ID
 
+        $hasCompletedOrder = \App\Models\Order::where('user_id', $userId)
+            ->where('order_status', 'completed')
+            ->where('items.food_item_id', $validated['food_item_id'])
+            ->exists();
+
+        if (!$hasCompletedOrder && !Gate::allows('is-admin')) {
+            return redirect()->back()->withErrors(['error' => 'You can only review items you have ordered and received.']);
+        }
+
         // 2. We no longer check for an existing review.
         //    We just create a new one every time.
         Review::create([

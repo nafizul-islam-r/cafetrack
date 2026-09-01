@@ -14,6 +14,11 @@ class FoodItem extends Model
         'image_url',
     ];
 
+    protected $casts = [
+        'stock_quantity' => 'integer',
+        'price' => 'float',
+    ];
+
     public function reviews()
     {
         return $this->hasMany(Review::class);

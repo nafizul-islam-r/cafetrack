@@ -23,6 +23,23 @@
                     <x-nav-link :href="route('board-games.index')" :active="request()->routeIs('board-games.index') || request()->routeIs('board-games.show') || request()->routeIs('board-games.create') || request()->routeIs('board-games.edit')">
                         {{ __('Board Games') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('wishlists.index')" :active="request()->routeIs('wishlists.index')">
+                        {{ __('Wishlist') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('orders.index')" :active="request()->routeIs('orders.*')">
+                        {{ __('Orders') }}
+                    </x-nav-link>
+
+                    @if(Auth::user()->role !== 'admin')
+                        <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')">
+                            {{ __('Cart') }} 
+                            @if(count(session('cart', [])) > 0)
+                                <span class="ms-1 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">{{ count(session('cart', [])) }}</span>
+                            @endif
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -96,6 +113,23 @@
             <x-responsive-nav-link :href="route('board-games.index')" :active="request()->routeIs('board-games.index') || request()->routeIs('board-games.show') || request()->routeIs('board-games.create') || request()->routeIs('board-games.edit')">
                 {{ __('Board Games') }}
             </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('wishlists.index')" :active="request()->routeIs('wishlists.index')">
+                {{ __('Wishlist') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('orders.index')" :active="request()->routeIs('orders.*')">
+                {{ __('Orders') }}
+            </x-responsive-nav-link>
+
+            @if(Auth::user()->role !== 'admin')
+                <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')">
+                    {{ __('Cart') }}
+                    @if(count(session('cart', [])) > 0)
+                        <span class="ms-1 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">{{ count(session('cart', [])) }}</span>
+                    @endif
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

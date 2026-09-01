@@ -29,14 +29,7 @@
                         </a>
                     </div>
                     
-                    <!-- Right Side (Button) -->
-                    <div class="flex items-center sm:ml-6 space-x-4">
-                        <!-- Theme Toggle Button Removed -->
-                        
-                        <a href="{{ route('login') }}" class="px-4 py-2 text-sm font-medium text-white bg-brand-red hover:bg-opacity-90 rounded-md shadow-sm">
-                            Login to Check Out
-                        </a>
-                    </div>
+
                 </div>
             </nav>
         </header>
