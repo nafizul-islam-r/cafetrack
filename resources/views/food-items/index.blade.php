@@ -34,7 +34,8 @@
                                 <div class="relative group border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-200">
                                     <a href="{{ route('food-items.show', $item) }}" class="block">
                                     <img src="{{ $item->image_url }}" alt="{{ $item->name }}"
-                                        class="w-full h-48 object-cover">
+                                        class="w-full h-48 object-cover"
+                                        onerror="this.onerror=null;this.src='https://placehold.co/600x400/EEE3C3/7C4A19?text=Food+Image';">
                                     <div class="p-4">
                                         <h3 class="font-bold text-lg">{{ $item->name }}</h3>
 

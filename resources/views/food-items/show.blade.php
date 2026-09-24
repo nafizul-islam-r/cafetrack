@@ -51,7 +51,8 @@
                 <div
                     class="md:col-span-1 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 flex flex-col space-y-6">
                     <img src="{{ $foodItem->image_url }}" alt="{{ $foodItem->name }}"
-                        class="w-full h-64 object-cover rounded-lg">
+                        class="w-full h-64 object-cover rounded-lg"
+                        onerror="this.onerror=null;this.src='https://placehold.co/600x400/EEE3C3/7C4A19?text=Food+Image';">
 
                     <div>
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ $foodItem->name }}</h3>
